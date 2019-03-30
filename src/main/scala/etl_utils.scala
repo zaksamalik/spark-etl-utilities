@@ -102,8 +102,8 @@ object etl_utils {
   // https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
   /**
     *
-    * @param dateStr  string to be parsed to date time
-    * @param patterns list of date date time patterns and corresponding DateTimeFormatter
+    * @param dateStr  string to be parsed to datetime
+    * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
     * @return
     */
   @tailrec
@@ -119,8 +119,8 @@ object etl_utils {
   /**
     * Normalize string to date with MONTH before DAY
     *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeDate_md(dateStr: String): Option[Date] = {
 
@@ -135,10 +135,10 @@ object etl_utils {
   }
 
   /**
-    * Normalize string to date time with MONTH before DAY
+    * Normalize string to datetime with MONTH before DAY
     *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeTimestamp_md(dateStr: String): Option[Timestamp] = {
 
@@ -155,8 +155,8 @@ object etl_utils {
   /**
     * Normalize string to date with DAY before MONTH
     *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeDate_dm(dateStr: String): Option[Date] = {
 
@@ -171,10 +171,10 @@ object etl_utils {
   }
 
   /**
-    * Normalize string to date time with DAY before MONTH
+    * Normalize string to datetime with DAY before MONTH
     *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeTimestamp_dm(dateStr: String): Option[Timestamp] = {
 
