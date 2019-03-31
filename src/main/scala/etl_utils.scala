@@ -35,7 +35,9 @@ object etl_utils {
     */
 
     val someData = Seq(
-      Row("2019-03-25T08:20:00")
+      Row("2019-03-25T08:20:00"),
+      Row("2019-03-25 08:20:00.1"),
+      Row(null)
     )
 
     val someSchema = List(
@@ -47,7 +49,7 @@ object etl_utils {
       StructType(someSchema)
     )
 
-    df.withColumn("test", UDFs.normalizeTimestampUDF_md(col("CREATED_ON"))).show()
+    df.withColumn("test", UDFs.normalizeTimestampUDF("MD")(col("CREATED_ON"))).show()
   }
 
   /**
@@ -90,41 +92,53 @@ object etl_utils {
   /* Date & DateTime parser functions */
   class UDFs {
 
-    val normalizeDateUDF_md: UserDefinedFunction = udf[Option[Date], String](normalizeDate_md)
-    val normalizeTimestampUDF_md: UserDefinedFunction = udf[Option[Timestamp], String](normalizeTimestamp_md)
-    val normalizeDateUDF_dm: UserDefinedFunction = udf[Option[Date], String](normalizeDate_dm)
-    val normalizeTimestampUDF_dm: UserDefinedFunction = udf[Option[Timestamp], String](normalizeTimestamp_dm)
+    def normalizeDateUDF(dmOrder: String): UserDefinedFunction = udf((dateStr: String) =>
+      if (dmOrder == "DM") normalizeDate_dm(dateStr)
+      else normalizeDate_md(dateStr))
+
+    def normalizeTimestampUDF(dmOrder: String): UserDefinedFunction = udf((dateTimeStr: String) =>
+      if (dmOrder == "DM") normalizeTimestamp_dm(dateTimeStr)
+      else normalizeTimestamp_md(dateTimeStr))
 
   }
 
-  /* Date & DateTime parser functions */
-  // below dateTime functions modified from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
-  // https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
+  /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer functions ~~~~~~~~~~~~~~~~~~~~ */
   /**
-    *
-    * @param dateStr  string to be parsed to date time
-    * @param patterns list of date date time patterns and corresponding DateTimeFormatter
+    * Clean string for date & datetime parsing
+    * @param dtStr date or datetime string
+    * @return
+    */
+  def dtCleaner(dtStr: String): String = dtStr match {
+    case null => ""
+    case _ => dtStr.trim
+  }
+
+  // Modified version of function from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
+  // See: https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
+  /**
+    * Recursively attempt to normalize string to date or datetime
+    * @param dtStr  string to be parsed to date datetime
+    * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
     * @return
     */
   @tailrec
-  def normalizeDT(dateStr: String,
+  def normalizeDT(dtStr: String,
                   patterns: List[(String, DateTimeFormatter)]): Try[TemporalAccessor] = patterns match {
     case head :: tail =>
-      val resultTry = Try(head._2.parse(dateStr))
-      if (resultTry.isSuccess) resultTry else normalizeDT(dateStr, tail)
+      val resultTry = Try(head._2.parse(dtStr))
+      if (resultTry.isSuccess) resultTry else normalizeDT(dtStr, tail)
 
-    case _ => Failure(new RuntimeException("no match found"))
+    case _ => Failure(new RuntimeException("Invalid value passed to function `normalizeDT`: `%s`".format(dtStr)))
   }
 
   /**
     * Normalize string to date with MONTH before DAY
-    *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeDate_md(dateStr: String): Option[Date] = {
 
-    val trimmedDate = dateStr.trim
+    val trimmedDate = dtCleaner(dateStr)
 
     if (trimmedDate.isEmpty) None
     else {
@@ -135,32 +149,13 @@ object etl_utils {
   }
 
   /**
-    * Normalize string to date time with MONTH before DAY
-    *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
-    */
-  def normalizeTimestamp_md(dateStr: String): Option[Timestamp] = {
-
-    val trimmedDate = dateStr.trim
-
-    if (trimmedDate.isEmpty) None
-    else {
-      Some(
-        Timestamp.valueOf(normalizeDT(trimmedDate, dateTimeFormats_md).map(sparkDateTimeFormatter.format).get)
-      )
-    }
-  }
-
-  /**
     * Normalize string to date with DAY before MONTH
-    *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * @param dateStr string to be parsed to datetime
+    * @return datetime value or None
     */
   def normalizeDate_dm(dateStr: String): Option[Date] = {
 
-    val trimmedDate = dateStr.trim
+    val trimmedDate = dtCleaner(dateStr)
 
     if (trimmedDate.isEmpty) None
     else {
@@ -171,22 +166,36 @@ object etl_utils {
   }
 
   /**
-    * Normalize string to date time with DAY before MONTH
-    *
-    * @param dateStr string to be parsed to date time
-    * @return date time value or None
+    * Normalize string to datetime with MONTH before DAY
+    * @param dateTimeStr string to be parsed to datetime
+    * @return datetime value or None
     */
-  def normalizeTimestamp_dm(dateStr: String): Option[Timestamp] = {
+  def normalizeTimestamp_md(dateTimeStr: String): Option[Timestamp] = {
 
-    val trimmedDate = dateStr.trim
+    val trimmedDateTime = dtCleaner(dateTimeStr)
 
-    if (trimmedDate.isEmpty) None
+    if (trimmedDateTime.isEmpty) None
     else {
       Some(
-        Timestamp.valueOf(normalizeDT(trimmedDate, dateTimeFormats_dm).map(sparkDateTimeFormatter.format).get)
+        Timestamp.valueOf(normalizeDT(trimmedDateTime, dateTimeFormats_md).map(sparkDateTimeFormatter.format).get)
       )
     }
   }
 
+  /**
+    * Normalize string to datetime with DAY before MONTH
+    * @param dateTimeStr string to be parsed to datetime
+    * @return datetime value or None
+    */
+  def normalizeTimestamp_dm(dateTimeStr: String): Option[Timestamp] = {
 
+    val trimmedDateTime = dtCleaner(dateTimeStr)
+
+    if (trimmedDateTime.isEmpty) None
+    else {
+      Some(
+        Timestamp.valueOf(normalizeDT(trimmedDateTime, dateTimeFormats_dm).map(sparkDateTimeFormatter.format).get)
+      )
+    }
+  }
 }
