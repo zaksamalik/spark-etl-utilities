@@ -96,14 +96,15 @@ object etl_utils {
 
     def normalizeTimestampUDF(dmOrder: String): UserDefinedFunction = udf((dateTimeStr: String) =>
       if (dmOrder == "DM") normalizeTimestamp_dm(dateTimeStr)
-      else normalizeTimestamp_md( dateTimeStr))
+      else normalizeTimestamp_md(dateTimeStr))
 
   }
 
-  /* Date & DateTime parser functions */
-  // below dateTime functions modified from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
-  // https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
+  /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer functions ~~~~~~~~~~~~~~~~~~~~ */
+  // Modified version of function from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
+  // See: https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
   /**
+    * Recursively attempt to normalize string to date or datetime
     *
     * @param dateStr  string to be parsed to datetime
     * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
