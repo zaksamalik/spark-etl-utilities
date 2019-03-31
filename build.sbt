@@ -1,4 +1,4 @@
-name := "etl_utilities"
+name := "spark-etl-utilities"
 
 version := "0.1"
 
