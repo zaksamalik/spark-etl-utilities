@@ -4,6 +4,9 @@ import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 
+import scala.annotation.tailrec
+import scala.util.{Failure, Try}
+
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import com.spark_etl_utils.dateTimeFormats._
 import org.apache.spark.SparkConf
@@ -12,8 +15,6 @@ import org.apache.spark.sql.functions.{col, udf}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
 import org.apache.spark.sql.{Row, SparkSession}
 
-import scala.annotation.tailrec
-import scala.util.{Failure, Try}
 
 object etl_utils {
 
@@ -30,13 +31,12 @@ object etl_utils {
       spark
         .read
         .json("s3a://data.open.data/raw/govt/usa/city/pittsburgh/wprdc/_311_service_requests/json")
-    df.show()
-    println(df.schema)
     */
 
     val someData = Seq(
-      Row("2019-03-25T08:20:00"),
-      Row("2019-03-25 08:20:00.1"),
+      //Row("2019-03-25T08:20:00"),
+      //Row("2019-03-25 08:20:00.1"),
+      Row("2019-03-25 08:20:00"),
       Row(null)
     )
 
@@ -49,7 +49,8 @@ object etl_utils {
       StructType(someSchema)
     )
 
-    df.withColumn("test", UDFs.normalize_timestamp_udf("MD")(col("CREATED_ON"))).show()
+    df.withColumn("test", UDFs.normalize_timestamp_udf("MD")(col("CREATED_ON"))).show(1000)
+    df.show()
   }
 
   /**
