@@ -1,19 +1,19 @@
-import scala.annotation.tailrec
-import scala.util.{Failure, Try}
-import dateTimeFormats._
+package com.spark_etl_utils
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
-
+import com.spark_etl_utils.dateTimeFormats._
 import org.apache.spark.SparkConf
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.{col, udf}
-import org.apache.spark.sql.{Row, SparkSession}
 import org.apache.spark.sql.types.{StringType, StructField, StructType}
+import org.apache.spark.sql.{Row, SparkSession}
 
+import scala.annotation.tailrec
+import scala.util.{Failure, Try}
 
 object etl_utils {
 
@@ -49,7 +49,7 @@ object etl_utils {
       StructType(someSchema)
     )
 
-    df.withColumn("test", UDFs.normalizeTimestampUDF("MD")(col("CREATED_ON"))).show()
+    df.withColumn("test", UDFs.normalize_timestamp_udf("MD")(col("CREATED_ON"))).show()
   }
 
   /**
@@ -92,11 +92,11 @@ object etl_utils {
   /* Date & DateTime parser functions */
   class UDFs {
 
-    def normalizeDateUDF(dmOrder: String): UserDefinedFunction = udf((dateStr: String) =>
+    def normalize_date_udf(dmOrder: String): UserDefinedFunction = udf((dateStr: String) =>
       if (dmOrder == "DM") normalizeDate_dm(dateStr)
       else normalizeDate_md(dateStr))
 
-    def normalizeTimestampUDF(dmOrder: String): UserDefinedFunction = udf((dateTimeStr: String) =>
+    def normalize_timestamp_udf(dmOrder: String): UserDefinedFunction = udf((dateTimeStr: String) =>
       if (dmOrder == "DM") normalizeTimestamp_dm(dateTimeStr)
       else normalizeTimestamp_md(dateTimeStr))
 
@@ -105,6 +105,7 @@ object etl_utils {
   /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer functions ~~~~~~~~~~~~~~~~~~~~ */
   /**
     * Clean string for date & datetime parsing
+    *
     * @param dtStr date or datetime string
     * @return
     */
@@ -117,7 +118,8 @@ object etl_utils {
   // See: https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
   /**
     * Recursively attempt to normalize string to date or datetime
-    * @param dtStr  string to be parsed to date datetime
+    *
+    * @param dtStr    string to be parsed to date datetime
     * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
     * @return
     */
@@ -133,6 +135,7 @@ object etl_utils {
 
   /**
     * Normalize string to date with MONTH before DAY
+    *
     * @param dateStr string to be parsed to datetime
     * @return datetime value or None
     */
@@ -150,6 +153,7 @@ object etl_utils {
 
   /**
     * Normalize string to date with DAY before MONTH
+    *
     * @param dateStr string to be parsed to datetime
     * @return datetime value or None
     */
@@ -167,6 +171,7 @@ object etl_utils {
 
   /**
     * Normalize string to datetime with MONTH before DAY
+    *
     * @param dateTimeStr string to be parsed to datetime
     * @return datetime value or None
     */
@@ -184,6 +189,7 @@ object etl_utils {
 
   /**
     * Normalize string to datetime with DAY before MONTH
+    *
     * @param dateTimeStr string to be parsed to datetime
     * @return datetime value or None
     */
