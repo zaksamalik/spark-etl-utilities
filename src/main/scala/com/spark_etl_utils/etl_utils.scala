@@ -90,9 +90,15 @@ object etl_utils {
 
   }
 
-  /* ~~~~~~~~~~~~~~~~~~~~ Date & DateTime parser functions ~~~~~~~~~~~~~~~~~~~~ */
+
   class UDFs {
 
+    /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer UDFs ~~~~~~~~~~~~~~~~~~~~ */
+    /**
+      * normalize string to date.
+      * @param dmOrder order of day and month in date string. `DM` = day before month, `MD` = month before day (default)
+      * @return
+      */
     def normalize_date_udf(dmOrder: String): UserDefinedFunction = udf((dateStr: String) =>
       if (dmOrder == "DM") normalizeDate_dm(dateStr)
       else normalizeDate_md(dateStr))
