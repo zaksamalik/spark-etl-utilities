@@ -87,9 +87,10 @@ object etl_utils {
     else {
       spark
     }
+
   }
 
-  /* Date & DateTime parser functions */
+  /* ~~~~~~~~~~~~~~~~~~~~ Date & DateTime parser functions ~~~~~~~~~~~~~~~~~~~~ */
   class UDFs {
 
     def normalize_date_udf(dmOrder: String): UserDefinedFunction = udf((dateStr: String) =>
