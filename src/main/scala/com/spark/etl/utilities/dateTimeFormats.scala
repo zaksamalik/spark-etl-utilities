@@ -1,4 +1,4 @@
-package com.spark_etl_utils
+package com.spark.etl.utilities
 
 import java.time.format.DateTimeFormatter
 
@@ -30,13 +30,21 @@ object dateTimeFormats {
 
   // datetime formats with month before day
   val dateTimeFormats_md: List[(String, DateTimeFormatter)] = List(
-    "uuuu-MM-dd'T'HH:mm:ss.SSS'['VV']'",
-    "uuuu-MM-dd'T'HH:mm:ss.SSS",
+    "uuuu-MM-dd HH:mm:ss",
     "uuuu-MM-dd'T'HH:mm:ss",
+    "uuuu-MM-dd HH:mm:ss.SSS",
+    "uuuu-MM-dd'T'HH:mm:ss.SSS",
+    "uuuu-MM-dd HH:mm:ss.SSS'Z'",
     "uuuu-MM-dd'T'HH:mm:ss.SSS'Z'",
+    "uuuu-MM-dd HH:mm:ss.SSS'['VV']'",
+    "uuuu-MM-dd'T'HH:mm:ss.SSS'['VV']'",
+    "uuuu-MM-dd HH:mm:ss.SSSXXX",
     "uuuu-MM-dd'T'HH:mm:ss.SSSXXX",
+    "uuuu-MM-dd HH:mm:ssXXX",
     "uuuu-MM-dd'T'HH:mm:ssXXX",
+    "uuuu-MM-dd HH:mm:ss.SSSXXX'['VV']'",
     "uuuu-MM-dd'T'HH:mm:ss.SSSXXX'['VV']'",
+    "uuuu-MM-dd HH:mm:ssXXX'['VV']'",
     "uuuu-MM-dd'T'HH:mm:ssXXX'['VV']'",
     "M/d/uu h:mm a",
     "MM/dd/uu h:mm a",
