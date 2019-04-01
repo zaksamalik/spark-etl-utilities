@@ -1,4 +1,4 @@
-package com.spark_etl_utilities
+package com.spark.etl.utilities
 
 import java.time.format.DateTimeFormatter
 
