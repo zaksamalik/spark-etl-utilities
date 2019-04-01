@@ -1,6 +1,6 @@
-package com.spark_etl_utilities
+package com.spark.etl.utilities
 
-import com.spark_etl_utilities.baseFunctions.{normalizeDate_dm, normalizeDate_md, normalizeTimestamp_dm, normalizeTimestamp_md}
+import com.spark.etl.utilities.baseFunctions.{normalizeDate_dm, normalizeDate_md, normalizeTimestamp_dm, normalizeTimestamp_md}
 import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.udf
 

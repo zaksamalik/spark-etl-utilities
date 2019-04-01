@@ -1,4 +1,4 @@
-package com.spark_etl_utilities
+package com.spark.etl.utilities
 
 import com.amazonaws.auth.DefaultAWSCredentialsProviderChain
 import org.apache.spark.SparkConf

@@ -1,10 +1,13 @@
-package com.spark_etl_utilities
+package com.spark.etl.utilities
 
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
 
-import com.spark_etl_utilities.dateTimeFormats.{
+import scala.annotation.tailrec
+import scala.util.{Failure, Try}
+
+import com.spark.etl.utilities.dateTimeFormats.{
   dateFormats_dm,
   dateFormats_md,
   dateTimeFormats_dm,
@@ -12,9 +15,6 @@ import com.spark_etl_utilities.dateTimeFormats.{
   sparkDateFormatter,
   sparkDateTimeFormatter
 }
-
-import scala.annotation.tailrec
-import scala.util.{Failure, Try}
 
 object baseFunctions {
 
