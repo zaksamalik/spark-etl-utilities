@@ -16,7 +16,34 @@ import com.spark.etl.utilities.dateTimeFormats.{
   sparkDateTimeFormatter
 }
 
-object baseFunctions {
+
+object generalFunctions {
+
+  /**
+    *
+    * @param str string to clean
+    * @return
+    */
+  def cleanString(str: String): Option[String] = str match {
+    case null => null
+    case s => Some(s.replaceAll("\n|\r\n|\u0000", "").trim())
+  }
+
+  /**
+    *
+    * @param boolVal boolean-indicator value to map to indicator values. Can be Integer, string or boolean
+    * @return
+    */
+  def mapBooleanValues(boolVal: Any): String = boolVal match {
+    case false | 0 | "0" | "f" | "F" | "false" | "False" | "FALSE" | "n" | "N" | "no" | "No" | "NO" => "N"
+    case true | 1 | "1" | "t" | "T" | "true" | "True" | "TRUE" | "y" | "Y" | "yes" | "Yes" | "YES" => "Y"
+    case _ => "Unknown"
+  }
+
+}
+
+
+object dateTimeFunctions {
 
   /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer functions ~~~~~~~~~~~~~~~~~~~~ */
   /**
@@ -41,7 +68,7 @@ object baseFunctions {
     */
   @tailrec
   private def normalizeDT(dtStr: String,
-                  patterns: List[(String, DateTimeFormatter)]): Try[TemporalAccessor] = patterns match {
+                          patterns: List[(String, DateTimeFormatter)]): Try[TemporalAccessor] = patterns match {
     case head :: tail =>
       val resultTry = Try(head._2.parse(dtStr))
       if (resultTry.isSuccess) resultTry else normalizeDT(dtStr, tail)
