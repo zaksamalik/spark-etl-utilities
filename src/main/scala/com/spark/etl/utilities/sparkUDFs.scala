@@ -1,6 +1,6 @@
 package com.spark.etl.utilities
 
-import com.spark.etl.utilities.generalFunctions.{cleanString, mapBooleanValues}
+import com.spark.etl.utilities.generalFunctions.{cleanString, stringToDouble, mapBooleans}
 import com.spark.etl.utilities.dateTimeFunctions.{
   normalizeDate_dm,
   normalizeDate_md,
@@ -15,7 +15,9 @@ object pythonUDFs {
 
   def cleanStringUDF: UserDefinedFunction = udf(cleanString _)
 
-  def mapBooleanValuesUDF: UserDefinedFunction = udf(mapBooleanValues _)
+  def stringToDoubleUDF: UserDefinedFunction = udf(stringToDouble _)
+
+  def mapBooleanValuesUDF: UserDefinedFunction = udf(mapBooleans _)
 
   def normalizeDateUDF_md: UserDefinedFunction = udf(normalizeDate_md _)
 

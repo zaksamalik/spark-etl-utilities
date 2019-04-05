@@ -1,12 +1,11 @@
 package com.spark.etl.utilities
 
+import com.google.common.base.CharMatcher
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
-
 import scala.annotation.tailrec
 import scala.util.{Failure, Try}
-
 import com.spark.etl.utilities.dateTimeFormats.{
   dateFormats_dm,
   dateFormats_md,
@@ -26,7 +25,17 @@ object generalFunctions {
     */
   def cleanString(str: String): Option[String] = str match {
     case null => null
-    case s => Some(s.replaceAll("\n|\r\n|\u0000", "").trim())
+    case s => Some(CharMatcher.javaIsoControl.trimFrom(s))
+  }
+
+  /**
+    *
+    * @param str double value coded as string
+    * @return
+    */
+  def stringToDouble(str: String): Option[Double] = str match {
+    case null => null
+    case s => Some(s.replaceAll("[$%,]", "").trim.toDouble)
   }
 
   /**
@@ -34,7 +43,7 @@ object generalFunctions {
     * @param boolVal boolean-indicator value to map to indicator values. Can be Integer, string or boolean
     * @return
     */
-  def mapBooleanValues(boolVal: Any): String = boolVal match {
+  def mapBooleans(boolVal: Any): String = boolVal match {
     case false | 0 | "0" | "f" | "F" | "false" | "False" | "FALSE" | "n" | "N" | "no" | "No" | "NO" => "N"
     case true | 1 | "1" | "t" | "T" | "true" | "True" | "TRUE" | "y" | "Y" | "yes" | "Yes" | "YES" => "Y"
     case _ => "Unknown"
