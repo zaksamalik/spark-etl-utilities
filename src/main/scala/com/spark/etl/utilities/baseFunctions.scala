@@ -25,17 +25,17 @@ object generalFunctions {
     */
   def cleanString(str: String): Option[String] = str match {
     case null => null
-    case s => Some(CharMatcher.javaIsoControl.trimFrom(s))
+    case s => Some(CharMatcher.javaIsoControl.removeFrom(s))
   }
 
   /**
     *
-    * @param str double value coded as string
+    * @param str string to check if empty
     * @return
     */
-  def stringToDouble(str: String): Option[Double] = str match {
-    case null => null
-    case s => Some(s.replaceAll("[$%,]", "").trim.toDouble)
+  def emptyStringToNull(str: String): Option[String] = str.trim match {
+    case null | "" => null
+    case s => Some(s)
   }
 
   /**
@@ -49,42 +49,22 @@ object generalFunctions {
     case _ => "Unknown"
   }
 
+  /**
+    *
+    * @param str double value coded as string
+    * @return
+    */
+  def stringToDouble(str: String): Option[Double] = str match {
+    case null => null
+    case s => Some(s.replaceAll("[$%,]", "").trim.toDouble)
+  }
+
 }
 
 
 object dateTimeFunctions {
 
   /* ~~~~~~~~~~~~~~~~~~~~ Date & Timestamp normalizer functions ~~~~~~~~~~~~~~~~~~~~ */
-  /**
-    * Clean string for date & datetime parsing
-    *
-    * @param dtStr date or datetime string
-    * @return
-    */
-  def dtCleaner(dtStr: String): String = dtStr match {
-    case null => ""
-    case _ => dtStr.trim
-  }
-
-  // Modified version of function from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
-  // See: https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
-  /**
-    * Recursively attempt to normalize string to date or datetime
-    *
-    * @param dtStr    string to be parsed to date datetime
-    * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
-    * @return
-    */
-  @tailrec
-  private def normalizeDT(dtStr: String,
-                          patterns: List[(String, DateTimeFormatter)]): Try[TemporalAccessor] = patterns match {
-    case head :: tail =>
-      val resultTry = Try(head._2.parse(dtStr))
-      if (resultTry.isSuccess) resultTry else normalizeDT(dtStr, tail)
-
-    case _ => Failure(new RuntimeException("Invalid value passed to function `normalizeDT`: `%s`".format(dtStr)))
-  }
-
   /**
     * Normalize string to date with MONTH before DAY
     *
@@ -95,7 +75,7 @@ object dateTimeFunctions {
 
     val trimmedDate = dtCleaner(dateStr)
 
-    if (trimmedDate.isEmpty) None
+    if (trimmedDate.isEmpty) null
     else {
       Some(
         Date.valueOf(normalizeDT(trimmedDate, dateFormats_md).map(sparkDateFormatter.format).get)
@@ -113,7 +93,7 @@ object dateTimeFunctions {
 
     val trimmedDate = dtCleaner(dateStr)
 
-    if (trimmedDate.isEmpty) None
+    if (trimmedDate.isEmpty) null
     else {
       Some(
         Date.valueOf(normalizeDT(trimmedDate, dateFormats_dm).map(sparkDateFormatter.format).get)
@@ -131,7 +111,7 @@ object dateTimeFunctions {
 
     val trimmedDateTime = dtCleaner(dateTimeStr)
 
-    if (trimmedDateTime.isEmpty) None
+    if (trimmedDateTime.isEmpty) null
     else {
       Some(
         Timestamp.valueOf(normalizeDT(trimmedDateTime, dateTimeFormats_md).map(sparkDateTimeFormatter.format).get)
@@ -149,12 +129,41 @@ object dateTimeFunctions {
 
     val trimmedDateTime = dtCleaner(dateTimeStr)
 
-    if (trimmedDateTime.isEmpty) None
+    if (trimmedDateTime.isEmpty) null
     else {
       Some(
         Timestamp.valueOf(normalizeDT(trimmedDateTime, dateTimeFormats_dm).map(sparkDateTimeFormatter.format).get)
       )
     }
+  }
+
+  /**
+    * Clean string for date & datetime parsing
+    *
+    * @param dtStr date or datetime string
+    * @return
+    */
+  def dtCleaner(dtStr: String): String = dtStr match {
+    case null => ""
+    case s => s.trim
+  }
+
+  // Modified version of function from Hussachai Puripunpinyo's post: `Normalizing a Date String in the Scala Way.`
+  // See: https://medium.com/@hussachai/normalizing-a-date-string-in-the-scala-way-f37a2bdcc4b9
+  /**
+    * Recursively attempt to normalize string to date or datetime
+    *
+    * @param dtStr    string to be parsed to date datetime
+    * @param patterns list of date datetime patterns and corresponding DateTimeFormatter
+    * @return
+    */
+  @tailrec
+  def normalizeDT(dtStr: String, patterns: List[(String, DateTimeFormatter)]): Try[TemporalAccessor] = patterns match {
+    case head :: tail =>
+      val resultTry = Try(head._2.parse(dtStr))
+      if (resultTry.isSuccess) resultTry else normalizeDT(dtStr, tail)
+
+    case _ => Failure(new RuntimeException("Invalid value passed to function `normalizeDT`: `%s`".format(dtStr)))
   }
 
 }

@@ -91,7 +91,6 @@ object dateTimeFormats {
     "dd/MMM/uu h:mm a"
   ).map(p => (p, DateTimeFormatter.ofPattern(p)))
 
-
   // date and date time formatter for Spark
   val sparkDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
   val sparkDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS")
