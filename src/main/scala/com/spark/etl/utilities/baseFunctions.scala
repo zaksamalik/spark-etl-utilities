@@ -33,9 +33,12 @@ object generalFunctions {
     * @param str string to check if empty
     * @return
     */
-  def emptyStringToNull(str: String): Option[String] = str.trim match {
-    case null | "" => null
-    case s => Some(s)
+  def emptyStringToNull(str: String): Option[String] = str match {
+    case null => null
+    case s => s.trim match {
+      case "" => null
+      case _ => Some(s)
+    }
   }
 
   /**
