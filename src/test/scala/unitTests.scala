@@ -124,10 +124,10 @@ class StringToDoubleTest extends FunSuite {
     //
     assert(GeneralFunctions.stringToDouble("100 Apples").contains(100.00))
     assert(GeneralFunctions.stringToDouble("$3.14/lbs.").contains(3.14))
+    assert(GeneralFunctions.stringToDouble("4,294,967,295.00").contains(4294967295.00))
     assert(GeneralFunctions.stringToDouble("4 294 967 295,000", comma_for_decimal = true).contains(4294967295.00))
     assert(GeneralFunctions.stringToDouble("4 294 967.295,000", comma_for_decimal = true).contains(4294967295.00))
     assert(GeneralFunctions.stringToDouble("4.294.967.295,000", comma_for_decimal = true).contains(4294967295.00))
-    assert(GeneralFunctions.stringToDouble("4,294,967,295.00").contains(4294967295.00))
     //
     assert(GeneralFunctions.stringToDouble(null) == null)
     assert(GeneralFunctions.stringToDouble("") == null)
