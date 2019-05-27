@@ -1,7 +1,7 @@
-package com.spark.etl.utilities
+package com.civicboost.spark.etl.utilities
 
-import com.spark.etl.utilities.generalFunctions.{cleanString, emptyStringToNull, mapBooleans, stringToDouble}
-import com.spark.etl.utilities.dateTimeFunctions.{
+import com.civicboost.spark.etl.utilities.GeneralFunctions.{cleanString, emptyStringToNull, mapBooleansYNU, stringToDouble}
+import DateTimeFunctions.{
   normalizeDate_dm,
   normalizeDate_md,
   normalizeTimestamp_dm,
@@ -11,20 +11,20 @@ import org.apache.spark.sql.expressions.UserDefinedFunction
 import org.apache.spark.sql.functions.udf
 
 
-object generalUDFs {
+object GeneralUDFs {
 
   def cleanStringUDF: UserDefinedFunction = udf(cleanString _)
 
   def emptyStringToNullUDF: UserDefinedFunction = udf(emptyStringToNull _)
 
-  def mapBooleanValuesUDF: UserDefinedFunction = udf(mapBooleans _)
+  def mapBooleanValuesUDF: UserDefinedFunction = udf(mapBooleansYNU _)
 
   def stringToDoubleUDF: UserDefinedFunction = udf(stringToDouble _)
 
 }
 
 
-object dateTimeUDFs {
+object DateTimeUDFs {
 
   def normalizeDateUDF_md: UserDefinedFunction = udf(normalizeDate_md _)
 
@@ -37,7 +37,7 @@ object dateTimeUDFs {
 }
 
 
-object scalaSpecificUDFs {
+object ScalaUDFs {
   /**
     * normalize string to date.
     *
