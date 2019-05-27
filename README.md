@@ -56,18 +56,6 @@ Spark ETL Utilities
                     </exclusion>
                 </exclusions>
             </dependency>
-            <!-- https://mvnrepository.com/artifact/io.delta/delta-core -->
-            <dependency>
-                <groupId>io.delta</groupId>
-                <artifactId>delta-core_2.12</artifactId>
-                <version>0.1.0</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>*</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
         </dependencies>
 
         <build>
