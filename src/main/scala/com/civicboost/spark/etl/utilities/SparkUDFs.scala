@@ -6,7 +6,8 @@ import com.civicboost.spark.etl.utilities.GeneralFunctions.{
   generateUUID,
   mapBooleansYNU,
   stringIsNumber,
-  stringToDouble
+  stringToDoublePeriodForDecimal,
+  stringToDoubleCommaForDecimal
 }
 import DateTimeFunctions.{
   normalizeDate_dm,
@@ -30,7 +31,9 @@ object GeneralUDFs {
 
   def stringIsNumber_UDF: UserDefinedFunction = udf(stringIsNumber _)
 
-  def stringToDouble_UDF: UserDefinedFunction = udf(stringToDouble _)
+  def stringToDoublePeriodForDecimal_UDF: UserDefinedFunction = udf(stringToDoublePeriodForDecimal _)
+
+  def stringToDoubleCommaForDecimal_UDF: UserDefinedFunction = udf(stringToDoubleCommaForDecimal _)
 
 }
 

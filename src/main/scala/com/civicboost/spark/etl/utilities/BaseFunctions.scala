@@ -63,12 +63,30 @@ object GeneralFunctions {
     case _ => "Unknown"
   }
 
+  /** Convert string to decimal where period represents decimal place.
+    *
+    * @param str double value coded as string
+    * @return
+    */
+  def stringToDoublePeriodForDecimal(str: String): Option[Double] = {
+    stringToDoubleBase(str)
+  }
+
+  /** Convert string to decimal where commas represents decimal place.
+    *
+    * @param str double value coded as string
+    * @return
+    */
+  def stringToDoubleCommaForDecimal(str: String): Option[Double] = {
+    stringToDoubleBase(str, comma_for_decimal = true)
+  }
+
   /** Convert string representing a number to Double.
     *
     * @param str double value coded as string
     * @return
     */
-  def stringToDouble(str: String, comma_for_decimal: Boolean = false): Option[Double] = str match {
+  def stringToDoubleBase(str: String, comma_for_decimal: Boolean = false): Option[Double] = str match {
     case null => null
     case s: String =>
       if (!stringIsNumber(s)) null
