@@ -7,7 +7,9 @@ Spark ETL Utilities
     ```sh
     cd /root/of/library && sbt clean package
     ```
-3. (Optional) Build fat dependencies JAR.  
+3. Make sure to include depdendencies (see [__build.sbt__](https://github.com/zaksamalik/spark-etl-utilities/blob/develop/build.sbt))
+
+   (Optional) Build fat dependencies JAR.  
     ```sh
     <project>
         <modelVersion>4.0.0</modelVersion>
