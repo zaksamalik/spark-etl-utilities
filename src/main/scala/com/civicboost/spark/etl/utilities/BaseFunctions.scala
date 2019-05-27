@@ -7,7 +7,14 @@ import java.time.temporal.TemporalAccessor
 
 import scala.annotation.tailrec
 import scala.util.{Failure, Try}
-import DateTimeFormats.{dateFormats_dm, dateFormats_md, dateTimeFormats_dm, dateTimeFormats_md, sparkDateFormatter, sparkDateTimeFormatter}
+import DateTimeFormats.{
+  dateFormats_dm,
+  dateFormats_md,
+  dateTimeFormats_dm,
+  dateTimeFormats_md,
+  sparkDateFormatter,
+  sparkDateTimeFormatter
+}
 
 
 object GeneralFunctions {
