@@ -1,8 +1,8 @@
-package com.spark.etl.utilities
+package com.civicboost.spark.etl.utilities
 
 import java.time.format.DateTimeFormatter
 
-object dateTimeFormats {
+object DateTimeFormats {
 
   // date formats with month before day
   val dateFormats_md: List[(String, DateTimeFormatter)] = List(
@@ -90,7 +90,6 @@ object dateTimeFormats {
     "d/MMM/uuuu H:mm:ss Z",
     "dd/MMM/uu h:mm a"
   ).map(p => (p, DateTimeFormatter.ofPattern(p)))
-
 
   // date and date time formatter for Spark
   val sparkDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
