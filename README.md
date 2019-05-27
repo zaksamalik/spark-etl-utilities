@@ -1,15 +1,15 @@
 # spark-etl-utilities
 Spark ETL Utilities
 
-### Build JAR.
-1. Clone repo.
-2. Build package.
+### Build JAR
+1. Clone repo
+2. Build package
     ```sh
     cd /root/of/library && sbt clean package
     ```
-3. Make sure to include depdendencies in [__build.sbt__](https://github.com/zaksamalik/spark-etl-utilities/blob/develop/build.sbt).
+3. Make sure to include depdendencies in [__build.sbt__](https://github.com/zaksamalik/spark-etl-utilities/blob/develop/build.sbt)
 
-   (Optional) Build fat JAR containing all required dependencies.  
+   (Optional) Build fat JAR containing all required dependencies    
     ```sh
     <project>
         <modelVersion>4.0.0</modelVersion>
