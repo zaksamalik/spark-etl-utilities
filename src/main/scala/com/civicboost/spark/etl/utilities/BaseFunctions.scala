@@ -180,7 +180,6 @@ object DateTimeFunctions {
     case head :: tail =>
       val resultTry = Try(head._2.parse(dtStr))
       if (resultTry.isSuccess) resultTry else normalizeDT(dtStr, tail)
-
     case _ => Failure(new RuntimeException("Invalid value passed to function `normalizeDT`: `%s`".format(dtStr)))
   }
 

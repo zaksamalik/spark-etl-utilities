@@ -46,8 +46,7 @@ object DateTimeUDFs {
 
 
 object ScalaUDFs {
-  /**
-    * normalize string to date.
+  /** Normalize string to date.
     *
     * @param dmOrder order of day and month in date string. `DM` = day before month, `MD` = month before day (default)
     * @return
@@ -56,8 +55,7 @@ object ScalaUDFs {
     if (dmOrder == "DM") normalizeDate_dm(dateStr)
     else normalizeDate_md(dateStr))
 
-  /**
-    * normalize string to timestamp.
+  /** Normalize string to timestamp.
     *
     * @param dmOrder order of day and month in date string. `DM` = day before month, `MD` = month before day (default)
     * @return
