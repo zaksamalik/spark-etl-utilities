@@ -1,5 +1,6 @@
 # spark-etl-utilities
 Spark ETL Utilities
+
 ### Build JAR.
 1. Clone repo.
 2. Move to root of library and use SBT to build package.
