@@ -4,6 +4,7 @@ import com.google.common.base.CharMatcher
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
+import java.util.UUID.randomUUID
 
 import scala.annotation.tailrec
 import scala.util.{Failure, Try}
@@ -40,6 +41,14 @@ object GeneralFunctions {
       case "" => null
       case _ => s
     }
+  }
+
+  /** Generate V4 UUID
+    *
+    * @return
+    */
+  def generateUUID(): String = {
+    randomUUID().toString
   }
 
   /** Map boolean values to `Y`, `N`, `Unknown`

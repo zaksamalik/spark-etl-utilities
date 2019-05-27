@@ -3,6 +3,7 @@ package com.civicboost.spark.etl.utilities
 import com.civicboost.spark.etl.utilities.GeneralFunctions.{
   cleanString,
   emptyStringToNull,
+  generateUUID,
   mapBooleansYNU,
   stringIsNumber,
   stringToDouble
@@ -22,6 +23,8 @@ object GeneralUDFs {
   def cleanString_UDF: UserDefinedFunction = udf(cleanString _)
 
   def emptyStringToNull_UDF: UserDefinedFunction = udf(emptyStringToNull _)
+
+  def generateUUID_UDF: UserDefinedFunction = udf(generateUUID _)
 
   def mapBooleansYNU_UDF: UserDefinedFunction = udf(mapBooleansYNU _)
 
