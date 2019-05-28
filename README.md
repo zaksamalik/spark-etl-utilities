@@ -1,13 +1,15 @@
 # spark-etl-utilities
 Spark ETL Utilities
 
-### Build JAR.
-1. Clone repo.
-2. Move to root of library and use SBT to build package.
+### Build JAR
+1. Clone repo
+2. Build package
     ```sh
     cd /root/of/library && sbt clean package
     ```
-3. (Optional) Build fat dependencies JAR.  
+3. Make sure to include depdendencies in [__build.sbt__](https://github.com/zaksamalik/spark-etl-utilities/blob/develop/build.sbt)
+
+   (Optional) Build fat JAR containing all required dependencies    
     ```sh
     <project>
         <modelVersion>4.0.0</modelVersion>
@@ -47,18 +49,6 @@ Spark ETL Utilities
                 <groupId>com.google.guava</groupId>
                 <artifactId>guava</artifactId>
                 <version>27.0.1-jre</version>
-                <exclusions>
-                    <exclusion>
-                        <groupId>*</groupId>
-                        <artifactId>*</artifactId>
-                    </exclusion>
-                </exclusions>
-            </dependency>
-            <!-- https://mvnrepository.com/artifact/io.delta/delta-core -->
-            <dependency>
-                <groupId>io.delta</groupId>
-                <artifactId>delta-core_2.12</artifactId>
-                <version>0.1.0</version>
                 <exclusions>
                     <exclusion>
                         <groupId>*</groupId>
