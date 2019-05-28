@@ -6,26 +6,27 @@ object DateTimeFormats {
 
   // date formats with month before day
   val dateFormats_md: List[(String, DateTimeFormatter)] = List(
-    "yyyyMMddZ",
-    "yyyyMMdd",
+    "uuuu-MM-dd",
+    "uuuuMMddZ",
+    "uuuuMMdd",
     "yyyy-MM-dd G",
-    "yyyy-MM-ddXXX",
-    "M/d/yy",
-    "MM/dd/yy",
-    "MM-dd-yy",
-    "M-d-yy",
-    "MMM d, yyyy",
-    "MMMM d, yyyy",
-    "EEEE, MMMM d, yyyy",
-    "MMM d yyyy",
-    "MMMM d yyyy",
-    "MM-dd-yyyy",
-    "M-d-yyyy",
-    "yyyy-MM-ddXXX",
-    "MM/dd/yyyy",
-    "M/d/yyyy",
-    "yyyy/M/d",
-    "MMM.dd.yyyy"
+    "uuuu-MM-ddXXX",
+    "M/d/uu",
+    "MM/dd/uu",
+    "MM-dd-uu",
+    "M-d-uu",
+    "MMM d, uuuu",
+    "MMMM d, uuuu",
+    "EEEE, MMMM d, uuuu",
+    "MMM d uuuu",
+    "MMMM d uuuu",
+    "MM-dd-uuuu",
+    "M-d-uuuu",
+    "uuuu-MM-ddXXX",
+    "MM/dd/uuuu",
+    "M/d/uuuu",
+    "uuuu/M/d",
+    "MMM.dd.uuuu"
   ).map(p => (p, DateTimeFormatter.ofPattern(p)))
 
   // datetime formats with month before day
@@ -76,7 +77,8 @@ object DateTimeFormats {
   // date formats with month before day
   val dateFormats_dm: List[(String, DateTimeFormatter)] = List(
     "dd/MM/uuuu",
-    "d/M/uuuu"
+    "d/M/uuuu",
+    "uuuu-dd-MM"
   ).map(p => (p, DateTimeFormatter.ofPattern(p)))
 
   // datetime formats with day before month
@@ -93,6 +95,6 @@ object DateTimeFormats {
 
   // date and date time formatter for Spark
   val sparkDateFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd")
-  val sparkDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd HH:mm:ss.SSS")
+  val sparkDateTimeFormatter: DateTimeFormatter = DateTimeFormatter.ofPattern("uuuu-MM-dd[ HH:mm:ss.SSS]")
 
 }

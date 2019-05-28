@@ -1,5 +1,8 @@
 package com.civicboost.spark.etl.utilities
 
+import org.apache.spark.sql.expressions.UserDefinedFunction
+import org.apache.spark.sql.functions.udf
+
 import com.civicboost.spark.etl.utilities.GeneralFunctions.{
   cleanString,
   emptyStringToNull,
@@ -15,9 +18,6 @@ import DateTimeFunctions.{
   normalizeTimestamp_dm,
   normalizeTimestamp_md
 }
-import org.apache.spark.sql.expressions.UserDefinedFunction
-import org.apache.spark.sql.functions.udf
-
 
 object GeneralUDFs {
 
