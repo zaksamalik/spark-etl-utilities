@@ -1,6 +1,5 @@
 package com.civicboost.spark.etl.utilities
 
-import com.google.common.base.CharMatcher
 import java.sql.{Date, Timestamp}
 import java.time.format.DateTimeFormatter
 import java.time.temporal.TemporalAccessor
@@ -8,11 +7,13 @@ import java.util.UUID.randomUUID
 import scala.annotation.tailrec
 import scala.util.{Failure, Try}
 
+import com.google.common.base.CharMatcher
+
 import DateTimeFormats.{
-  dateFormats_dm,
   dateFormats_md,
-  dateTimeFormats_dm,
+  dateFormats_dm,
   dateTimeFormats_md,
+  dateTimeFormats_dm,
   sparkDateFormatter,
   sparkDateTimeFormatter
 }
@@ -139,7 +140,9 @@ object DateTimeFunctions {
     * @return datetime value or null
     */
   def normalizeDate_md(dateStr: String): Date = {
-    Date.valueOf(getDateOrTimestamp(dateStr, dateFormats_md ::: dateTimeFormats_md, sparkDateFormatter))
+    getDate(
+      getDateOrTimestampString(dateStr, dateFormats_md ::: dateTimeFormats_md, sparkDateFormatter)
+    )
   }
 
   /** Normalize string to date with DAY before MONTH
@@ -148,7 +151,9 @@ object DateTimeFunctions {
     * @return datetime value or null
     */
   def normalizeDate_dm(dateStr: String): Date = {
-    Date.valueOf(getDateOrTimestamp(dateStr, dateFormats_dm ::: dateTimeFormats_dm, sparkDateFormatter))
+    getDate(
+      getDateOrTimestampString(dateStr, dateFormats_dm ::: dateTimeFormats_dm, sparkDateFormatter)
+    )
   }
 
   /** Normalize string to datetime with MONTH before DAY
@@ -157,10 +162,9 @@ object DateTimeFunctions {
     * @return datetime value or None
     */
   def normalizeTimestamp_md(dateTimeStr: String): Timestamp = {
-
-    val timestampString = getDateOrTimestamp(dateTimeStr, dateTimeFormats_md ::: dateFormats_md, sparkDateTimeFormatter)
-
-    getTimestamp(timestampString)
+    getTimestamp(
+      getDateOrTimestampString(dateTimeStr, dateTimeFormats_md ::: dateFormats_md, sparkDateTimeFormatter)
+    )
   }
 
   /** Normalize string to datetime with DAY before MONTH
@@ -169,10 +173,9 @@ object DateTimeFunctions {
     * @return datetime value or None
     */
   def normalizeTimestamp_dm(dateTimeStr: String): Timestamp = {
-
-    val timestampString = getDateOrTimestamp(dateTimeStr, dateTimeFormats_dm ::: dateFormats_dm, sparkDateTimeFormatter)
-
-    getTimestamp(timestampString)
+    getTimestamp(
+      getDateOrTimestampString(dateTimeStr, dateTimeFormats_dm ::: dateFormats_dm, sparkDateTimeFormatter)
+    )
   }
 
   /** Get timestamp value of string.
@@ -182,31 +185,34 @@ object DateTimeFunctions {
     */
   def getTimestamp(tsString: String): Timestamp = tsString match {
     case null => null
-    case _ =>
-      if (tsString.length == 10) {
-        Timestamp.valueOf(tsString + " 00:00:00.000")
-      }
-      else {
-        Timestamp.valueOf(tsString)
-      }
+    case s: String =>
+      if (s.length == 10) Timestamp.valueOf(s + " 00:00:00.000")
+      else Timestamp.valueOf(s)
+  }
+
+  /** Get date value of string.
+    *
+    * @param dateString date in string format.
+    * @return
+    */
+  def getDate(dateString: String): Date = dateString match {
+    case null => null
+    case _ => Date.valueOf(dateString)
   }
 
   /** Get date or timestamp from string
     *
-    * @param dateTimeString string containing date or timestamp
-    * @param dateTimeFormats datetime formats to match against
-    * @param dateTimeFormatter datetime formatter
+    * @param dtString    string containing date or timestamp
+    * @param dtFormats   datetime formats to match against
+    * @param dtFormatter datetime formatter
     * @return
     */
-  def getDateOrTimestamp(dateTimeString: String,
-                         dateTimeFormats: List[(String, DateTimeFormatter)],
-                         dateTimeFormatter: DateTimeFormatter): String = {
-
-    val trimmedDateTime = dtCleaner(dateTimeString)
-
-    if (trimmedDateTime.isEmpty) null
-    else {
-      normalizeDT(trimmedDateTime, dateTimeFormats).map(dateTimeFormatter.format).get
+  def getDateOrTimestampString(dtString: String,
+                               dtFormats: List[(String, DateTimeFormatter)],
+                               dtFormatter: DateTimeFormatter): String = {
+    dtCleaner(dtString) match {
+      case "" => null
+      case s: String => normalizeDT(s, dtFormats).map(dtFormatter.format).get
     }
   }
 

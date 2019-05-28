@@ -194,6 +194,8 @@ class NormalizeDateMDTest extends FunSuite {
     assert(DateTimeFunctions.normalizeDate_md("1999-03-22 5:06 AM").toString.contains("1999-03-22"))
     assert(DateTimeFunctions.normalizeDate_md("1999-3-22 5:06 AM").toString.contains("1999-03-22"))
     assert(DateTimeFunctions.normalizeDate_md("Mar.22.1999").toString.contains("1999-03-22"))
+    assert(DateTimeFunctions.normalizeDate_md("") == null)
+    assert(DateTimeFunctions.normalizeDate_md(null) == null)
   }
 }
 
@@ -253,5 +255,7 @@ class NormalizeTimestampMDTest extends FunSuite {
     assert(DateTimeFunctions.normalizeTimestamp_md("1999-03-22 5:06 AM").toString.contains("1999-03-22 05:06:00.0"))
     assert(DateTimeFunctions.normalizeTimestamp_md("1999-3-22 5:06 AM").toString.contains("1999-03-22 05:06:00.0"))
     assert(DateTimeFunctions.normalizeTimestamp_md("Mar.22.1999").toString.contains("1999-03-22 00:00:00.0"))
+    assert(DateTimeFunctions.normalizeTimestamp_md("") == null)
+    assert(DateTimeFunctions.normalizeTimestamp_md(null) == null)
   }
 }
