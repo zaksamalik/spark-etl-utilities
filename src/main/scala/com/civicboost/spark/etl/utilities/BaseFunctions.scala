@@ -156,6 +156,16 @@ object DateTimeFunctions {
     )
   }
 
+  /** Get date value of string.
+    *
+    * @param dateString date in string format.
+    * @return
+    */
+  def getDate(dateString: String): Date = dateString match {
+    case null => null
+    case _ => Date.valueOf(dateString)
+  }
+
   /** Normalize string to datetime with MONTH before DAY
     *
     * @param dateTimeStr string to be parsed to datetime
@@ -188,16 +198,6 @@ object DateTimeFunctions {
     case s: String =>
       if (s.length == 10) Timestamp.valueOf(s + " 00:00:00.000")
       else Timestamp.valueOf(s)
-  }
-
-  /** Get date value of string.
-    *
-    * @param dateString date in string format.
-    * @return
-    */
-  def getDate(dateString: String): Date = dateString match {
-    case null => null
-    case _ => Date.valueOf(dateString)
   }
 
   /** Get date or timestamp from string
