@@ -6,9 +6,9 @@ import com.civicboost.spark.etl.utilities.DateTimeFunctions
 /* ~~~~~~~~~~ General Functions ~~~~~~~~~~*/
 class CleanStringTest extends FunSuite {
   test("GeneralFunctions.cleanString") {
-    assert(GeneralFunctions.cleanString("\u0000") == "")
+    assert(GeneralFunctions.cleanString("\u0000") == null)
     assert(GeneralFunctions.cleanString(null) == null)
-    assert(GeneralFunctions.cleanString("") == "")
+    assert(GeneralFunctions.cleanString("") == null)
     assert(GeneralFunctions.cleanString("abc ") == "abc")
     assert(GeneralFunctions.cleanString("abc 123\u0000") == "abc 123")
   }

@@ -28,7 +28,12 @@ object GeneralFunctions {
     */
   def cleanString(str: String): String = str match {
     case null => null
-    case s => CharMatcher.javaIsoControl.removeFrom(s).trim
+    case s =>
+      val string_clean = CharMatcher.javaIsoControl.removeFrom(s).trim
+      string_clean match {
+        case "" => null
+        case _ => string_clean
+      }
   }
 
   /** Convert empty strings to null values.
